@@ -1,14 +1,13 @@
 var minimumCard = 1;
 var boardSize = [10, 10];
 var cards = {};
+var removed = {};
 
 var pairs = boardSize[0] * boardSize[1] / 2;
-
 
 var random = function(min, max) {
   return min + Math.round(Math.random() * (max-min));
 };
-
 
 var validateBoard = function(board) {
   var flatten =
@@ -83,21 +82,65 @@ var checkCard = function(row, card) {
 };
 
 var checkMatches = function(data) {
-  return checkCard(data[0][0], data[0][1]) === checkCard(data[1][0], data[1][1]);
-}
+
+  // Both selections can't be for the same card
+  if(data[0][0] === data[1][0]) {
+    if(data[0][1] === data[1][1]) {
+      return false;
+    }
+  }
+
+  var card1 = checkCard(data[0][0], data[0][1]);
+  var card2 = checkCard(data[1][0], data[1][1]);
+
+  if(card1 === null || card2 === null) {
+    return false;
+  }
+
+  return card1 === card2;
+};
+
+var removeCard = function(data) {
+  if(!removed[data[0]]) {
+    removed[data[0]] = {};
+  }
+  removed[data[0]][data[1]] = board[data[0]][data[1]];
+
+  board[data[0]][data[1]] = null;
+};
 
 var board = createBoard();
 var boardIsValid = validateBoard(board);
 
 
+
+var getRandomNotRemoved = function() {
+  var value = [random(0, 9), random(0, 9)];
+  if(removed[value[0]] && removed[value[0]][value[1]]) {
+    return getRandomNotRemoved();
+  }
+
+  return value;
+};
+
+var success = 0;
+var randomLoops = 1000;
+for (var i = 0; i < randomLoops; i++) {
+  var first = getRandomNotRemoved();
+  var second = getRandomNotRemoved();
+  var isMatch = checkMatches([first, second])
+  //console.log("checkMatches for", i, isMatch);
+
+  if(isMatch) {
+    removeCard(first);
+    removeCard(second);
+
+    success++;
+  }
+};
+
+console.log("random guess success rate", ((success / randomLoops) * 100).toFixed(2));
+console.log("removed cards", removed);
+console.log("board", board);
 console.log("pairs", pairs);
 console.log("boardIsValid", boardIsValid);
-console.log("board", board);
-
-
-console.log("checkCard", checkCard(0, 5));
-
-
-console.log("checkMatches", checkMatches([[0,5], [4,5]]));
-
-
