@@ -50,7 +50,7 @@
       element.dataset.row = row;
       element.dataset.card = card;
 
-      element.classList.add("card-" + board.random(1, 6));
+      element.classList.add("card-" + board.random(1, 12));
       element.addEventListener("click", cardClicked);
       element.getElementsByClassName("back")[0].innerText = board.checkCard(row, card);
     };
