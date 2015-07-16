@@ -1,0 +1,77 @@
+#divider {
+  clear: both;
+}
+
+.flip-container {
+  cursor: pointer;
+  float: left;
+  perspective: 1000;
+  transform: translate3d(0,0,0);
+  transform-style: preserve-3d;
+}
+
+.flip-container, .front, .back {
+  width: 100px;
+  height: 100px;
+}
+
+.flipper {
+  transition: 0.6s linear;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.front, .back {
+  backface-visibility: hidden;
+  transition: 0.6s;
+  transform: translate3d(0,0,0);
+  transform-style: preserve-3d;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateX(180deg);
+}
+
+.flip-container {
+  position: relative;
+}
+
+.flip-container.clicked .back {
+  transform: rotateX(0deg);
+}
+
+.flip-container.clicked   .front {
+  transform: rotateX(180deg);
+}
+
+/*Ugh*/
+.back {
+  background-color: green;
+}
+.card-1 .front {
+  background-color: pink;
+}
+.card-2 .front {
+  background-color: red;
+}
+.card-3 .front {
+  background-color: orange;
+}
+.card-4 .front {
+  background-color: blue;
+}
+.card-5 .front {
+  background-color: yellow;
+}
+.card-6 .front {
+  background-color: rebeccapurple;
+}

@@ -5,6 +5,40 @@ var board = {
   removed: {},
   pairs: 0,
   board: [],
+  inited: false,
+  init: function(options) {
+    // TODO: merge options
+    if(options.boardSize) {
+      this.boardSize = options.boardSize;
+    }
+
+    this.inited = true;
+    this.calculatePairs();
+
+    if(this.pairs % 2) {
+      console.log("Not enough pairs to go around");
+      return false;
+    }
+
+    return this.createBoard();
+  },
+  createBoard: function() {
+    if(!this.inited) {
+      console.log("Run init");
+      return false;
+    }
+
+    this.board = [];
+    for(var i = 0; i < this.boardSize[0]; i++) {
+      var row = [];
+      for(var u = 0; u < this.boardSize[1]; u++) {
+        row.push(this.getFreeCard());
+      }
+
+      this.board.push(row);
+    }
+    return this.board;
+  },
   calculatePairs: function() {
     this.pairs = this.boardSize[0] * this.boardSize[1] / 2;
   },
@@ -68,19 +102,6 @@ var board = {
 
     return card;
   },
-  createBoard: function() {
-    this.calculatePairs();
-    this.board = [];
-    for(var i = 0; i < this.boardSize[0]; i++) {
-      var row = [];
-      for(var u = 0; u < this.boardSize[1]; u++) {
-        row.push(this.getFreeCard());
-      }
-
-      this.board.push(row);
-    }
-    return this.board;
-  },
   checkCard: function(row, card) {
     return this.board[row][card];
   },
@@ -112,7 +133,7 @@ var board = {
   }
 };
 
-if(module) {
+if(typeof module !== "undefined") {
   module.exports = board;
 }
 
