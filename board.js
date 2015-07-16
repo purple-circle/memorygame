@@ -1,17 +1,16 @@
 var board = {
-  minimumCard: 1,
-  boardSize: [10, 10],
+  options: {
+    minimumCard: 1,
+    boardSize: [10, 10],
+  },
   cards: {},
   removed: {},
   pairs: 0,
   board: [],
   inited: false,
   init: function(options) {
-    // TODO: merge options
     if(options) {
-      if(options.boardSize) {
-        this.boardSize = options.boardSize;
-      }
+      this.options = this.extend(this.options, options);
     }
 
     this.inited = true;
@@ -31,9 +30,9 @@ var board = {
     }
 
     this.board = [];
-    for(var i = 0; i < this.boardSize[0]; i++) {
+    for(var i = 0; i < this.options.boardSize[0]; i++) {
       var row = [];
-      for(var u = 0; u < this.boardSize[1]; u++) {
+      for(var u = 0; u < this.options.boardSize[1]; u++) {
         row.push(this.getFreeCard());
       }
 
@@ -42,7 +41,7 @@ var board = {
     return this.board;
   },
   calculatePairs: function() {
-    this.pairs = this.boardSize[0] * this.boardSize[1] / 2;
+    this.pairs = this.options.boardSize[0] * this.options.boardSize[1] / 2;
   },
   random: function(min, max) {
     return min + Math.round(Math.random() * (max-min));
@@ -66,7 +65,7 @@ var board = {
 
     var notFound = false;
     var notEnoughPairs = false;
-    for(var i = this.minimumCard; i <= this.pairs; i++) {
+    for(var i = this.options.minimumCard; i <= this.pairs; i++) {
       if(flatten.indexOf(i) === -1) {
         notFound = i;
       }
@@ -90,7 +89,7 @@ var board = {
     return true;
   },
   getFreeCard: function() {
-    var card = this.random(this.minimumCard, this.pairs);
+    var card = this.random(this.options.minimumCard, this.pairs);
 
     if(this.cards[card] === 2) {
       return this.getFreeCard();
@@ -132,10 +131,23 @@ var board = {
     this.removed[data[0]][data[1]] = this.board[data[0]][data[1]];
 
     this.board[data[0]][data[1]] = null;
+  },
+  extend: function() {
+    var extended = {};
+
+    for(key in arguments) {
+      var argument = arguments[key];
+      for (prop in argument) {
+        if (Object.prototype.hasOwnProperty.call(argument, prop)) {
+          extended[prop] = argument[prop];
+        }
+      }
+    }
+
+    return extended;
   }
 };
 
 if(typeof module !== "undefined") {
   module.exports = board;
 }
-

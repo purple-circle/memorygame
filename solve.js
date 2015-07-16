@@ -1,14 +1,19 @@
 var board = require("./board");
 
+var options = {
+  boardSize: [10, 10]
+};
 
-var gameBoard = board.init();
+var gameBoard = board.init(options);
 var boardIsValid = board.validateBoard(gameBoard);
 
 
 var memory = {};
 
 var getRandomNotRemoved = function() {
-  var value = [board.random(0, 9), board.random(0, 9)];
+  var first = board.random(0, board.options.boardSize[0]-1);
+  var second = board.random(0, board.options.boardSize[1]-1);
+  var value = [first, second];
   if(board.removed[value[0]] && board.removed[value[0]][value[1]]) {
     return getRandomNotRemoved();
   }
@@ -53,10 +58,12 @@ for (var i = 0; i < randomLoops; i++) {
   checkLoopMatches();
 }
 
+
+
 console.log("removed cards", board.removed);
 console.log("gameBoard", gameBoard);
 console.log("pairs", board.pairs);
-
 console.log("boardIsValid", boardIsValid);
-
 console.log("random guess success rate", ((success / randomLoops) * 100).toFixed(2));
+
+
