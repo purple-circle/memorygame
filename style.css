@@ -39,6 +39,10 @@ body {
   transform-style: preserve-3d;
 }
 
+.flip-container.shadow {
+  box-shadow: 0.1px 0.1px 50px saddlebrown;
+}
+
 .flip-container, .front, .back {
   width: 100px;
   height: 100px;

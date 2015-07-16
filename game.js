@@ -23,6 +23,12 @@
       return newElement;
     };
 
+    window.shadow = function() {
+      [].forEach.call(document.getElementsByClassName("flip-container"), function(element) {
+        element.classList.toggle("shadow");
+      });
+    };
+
     var lastCard = false;
     var cardClicked = function() {
       this.classList.toggle("clicked");
