@@ -1,7 +1,7 @@
 var board = require("./board");
 
 
-var gameBoard = board.createBoard();
+var gameBoard = board.init();
 var boardIsValid = board.validateBoard(gameBoard);
 
 

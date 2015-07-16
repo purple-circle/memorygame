@@ -8,8 +8,10 @@ var board = {
   inited: false,
   init: function(options) {
     // TODO: merge options
-    if(options.boardSize) {
-      this.boardSize = options.boardSize;
+    if(options) {
+      if(options.boardSize) {
+        this.boardSize = options.boardSize;
+      }
     }
 
     this.inited = true;
