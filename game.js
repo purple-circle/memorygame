@@ -12,20 +12,24 @@
     var gameBoard = board.init(options);
     var boardIsValid = board.validateBoard(gameBoard);
 
-    var append = function(element) {
+    var append = function(element, value) {
       var newElement = element.cloneNode(true);
-      newElement.classList.add("card-" + board.random(1, 6));
+      boardArea.appendChild(newElement);
+      return newElement;
+    };
 
-      newElement.addEventListener("click", function() {
+    var appendCard = function(value) {
+      var element = append(template);
+      element.classList.add("card-" + board.random(1, 6));
+      element.addEventListener("click", function() {
         this.classList.toggle("clicked");
       });
+      element.getElementsByClassName("back")[0].innerHTML = value;
+    };
 
-      boardArea.appendChild(newElement);
-    }
-
-    for (var i = board.boardSize[0] - 1; i >= 0; i--) {
-      for (var u = board.boardSize[1] - 1; u >= 0; u--) {
-        append(template);
+    for (var i = board.options.boardSize[0] - 1; i >= 0; i--) {
+      for (var u = board.options.boardSize[1] - 1; u >= 0; u--) {
+        appendCard(board.board[i][u]);
       }
       append(divider);
     }

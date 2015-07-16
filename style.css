@@ -1,3 +1,8 @@
+body {
+  font-family: helvetica;
+  -webkit-font-smoothing: antialiased;
+}
+
 #divider {
   clear: both;
 }
@@ -13,6 +18,8 @@
 .flip-container, .front, .back {
   width: 100px;
   height: 100px;
+  max-height: 100px;
+  overflow: hidden;
 }
 
 .flipper {
@@ -56,6 +63,10 @@
 /*Ugh*/
 .back {
   background-color: green;
+  text-align: center;
+  font-size: 3em;
+  color: white;
+  padding-top: 22px;
 }
 .card-1 .front {
   background-color: pink;
