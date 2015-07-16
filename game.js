@@ -29,6 +29,23 @@
       });
     };
 
+    window.shadowparty = function() {
+      window.intervals = window.intervals || [];
+      if(window.intervals.length) {
+        window.intervals.map(function(interval) {
+          clearInterval(interval);
+        });
+        window.intervals = [];
+      } else {
+        [].forEach.call(document.getElementsByClassName("flip-container"), function(element) {
+          var interval = setInterval(function() {
+            element.classList.toggle("shadow");
+          }, board.random(300, 2000));
+          window.intervals.push(interval);
+        });
+      }
+    };
+
     var lastCard = false;
     var cardClicked = function() {
       this.classList.toggle("clicked");
