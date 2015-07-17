@@ -62,7 +62,7 @@ gulp.task 'autoprefixer', ['less'], ->
 
 gulp.task 'buildcss', ['autoprefixer']
 
-gulp.task 'default', ['autoprefixer', 'coffee']
+gulp.task 'default', ['autoprefixer', 'coffee', 'watch']
 
 gulp.task 'watch', ->
   gulp.watch 'src/less/**/*.less', ['buildcss']
