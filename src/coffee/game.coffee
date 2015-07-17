@@ -64,6 +64,9 @@ createGame = ->
       , 600
 
   cardClicked = ->
+    # TODO: if transition in progress, wait until transition has been finished
+
+
     if clickedElements.length == 2
       clearCards()
 
