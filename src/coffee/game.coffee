@@ -56,6 +56,7 @@ createGame = ->
   setMatchCards = ->
     elements = document.getElementsByClassName('clicked')
     [].forEach.call elements, (element) ->
+      # TODO: implement transitionend
       element.classList.add 'match'
 
   cardClicked = ->
