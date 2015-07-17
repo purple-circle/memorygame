@@ -62,6 +62,9 @@ createGame = ->
     if clickedElements.length == 2
       clearCards()
 
+    if @classList.contains('match')
+      return false
+
     @classList.toggle 'clicked'
     isClicked = @classList.contains('clicked')
     selectedCard = [
