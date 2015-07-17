@@ -5,6 +5,9 @@
     var template = originalTemplate.getElementsByClassName("flip-container")[0];
     var divider = document.getElementById("divider");
 
+    var clickedElements = [];
+    var lastCard = false;
+
     var options = {
       boardSize: [4, 5]
     };
@@ -46,8 +49,27 @@
       }
     };
 
-    var lastCard = false;
+    var clearCards = function() {
+      [].forEach.call(document.getElementsByClassName("flip-container"), function(element) {
+        if(element.classList.contains("match")) {
+          return false;
+        }
+        element.classList.remove("clicked");
+      });
+
+      clickedElements = [];
+    };
+
+    var setMatchCards = function() {
+      [].forEach.call(document.getElementsByClassName("clicked"), function(element) {
+        element.classList.add("match");
+      });
+    };
+
     var cardClicked = function() {
+      if(clickedElements.length === 2) {
+        clearCards();
+      }
       this.classList.toggle("clicked");
 
       var isClicked = this.classList.contains("clicked");
@@ -56,12 +78,17 @@
       if(lastCard && isClicked) {
         if(board.checkMatches([selectedCard, lastCard])) {
           console.log("match!");
+          setMatchCards();
         }
       }
 
+      var cardJson = JSON.stringify(selectedCard);
+
       if(isClicked) {
+        clickedElements.push(cardJson);
         lastCard = selectedCard;
       } else {
+        clickedElements.splice(clickedElements.indexOf(cardJson), 1);
         lastCard = false;
       }
 
