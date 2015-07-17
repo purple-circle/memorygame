@@ -1,0 +1,80 @@
+@import "variables";
+
+body {
+  font-family: helvetica;
+  font-smoothing: antialiased;
+}
+
+#divider {
+  clear: both;
+}
+
+.flip-container {
+  cursor: pointer;
+  float: left;
+  perspective: 1000;
+  transform: translate3d(0,0,0);
+  transform-style: preserve-3d;
+  position: relative;
+
+  &.shadow {
+    box-shadow: 0.1px 0.1px 50px saddlebrown;
+  }
+
+  &.clicked {
+    .back {
+      transform: rotateX(0deg);
+    }
+    .front {
+      transform: rotateX(180deg);
+    }
+  }
+
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .back {
+    transform: rotateX(180deg);
+    background-color: #2ECC40;
+    text-align: center;
+    font-size: 3em;
+    color: white;
+    padding-top: 22px;
+  }
+}
+
+.flip-container, .front, .back {
+  width: 100px;
+  height: 100px;
+  max-height: 100px;
+  overflow: hidden;
+}
+
+.flipper {
+  transition: 0.6s linear;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.front, .back {
+  backface-visibility: hidden;
+  transition: 0.6s;
+  transform: translate3d(0,0,0);
+  transform-style: preserve-3d;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.createCardFronts(@iterator:1) when(@iterator <= length(@colors)) {
+  .card-@{iterator} .front {
+    background-color: extract(@colors, @iterator);
+  }
+  .createCardFronts((@iterator + 1));
+}
+.createCardFronts();
+
