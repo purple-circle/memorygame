@@ -56,8 +56,12 @@ createGame = ->
   setMatchCards = ->
     elements = document.getElementsByClassName('clicked')
     [].forEach.call elements, (element) ->
-      # TODO: implement transitionend
-      element.classList.add 'match'
+      # poor mans transitionend right here
+      setTimeout ->
+        element.classList.add 'match'
+        setTimeout ->
+          clearCards()
+      , 600
 
   cardClicked = ->
     if clickedElements.length == 2
@@ -72,6 +76,10 @@ createGame = ->
       @dataset.row
       @dataset.card
     ]
+
+    # TODO: refactor, too drunk now
+    if JSON.stringify(lastCard) is JSON.stringify(selectedCard)
+      clearCards()
 
     if lastCard and isClicked
       if board.checkMatches [selectedCard, lastCard]
