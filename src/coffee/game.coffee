@@ -1,6 +1,8 @@
 
 createGame = ->
   boardArea = document.getElementById('board')
+  matchArea = document.getElementById('matches')
+  matchTemplate = document.getElementsByClassName('match-template')[0]
   originalTemplate = document.getElementsByClassName('template')[0]
   template = originalTemplate.getElementsByClassName('flip-container')[0]
   divider = document.getElementById('divider')
@@ -88,6 +90,7 @@ createGame = ->
       if board.checkMatches [selectedCard, lastCard]
         console.log 'match!'
         setMatchCards()
+        appendMatchCard(selectedCard)
 
     cardJson = JSON.stringify(selectedCard)
 
@@ -100,6 +103,10 @@ createGame = ->
 
     console.log 'text', board.checkCard(selectedCard[0], selectedCard[1])
 
+  appendMatchCard = (card) ->
+    console.log "card", card
+    element = append(matchTemplate)
+    element.innerText = board.checkCard(card[0], card[1])
 
   appendCard = (row, card) ->
     element = append(template)
