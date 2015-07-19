@@ -19,10 +19,13 @@ createGame = ->
     console.warn 'Board is invalid :('
     return false
 
-  append = (element, value) ->
+  appendTo = (element, template) ->
     newElement = element.cloneNode(true)
-    boardArea.appendChild newElement
+    template.appendChild newElement
     newElement
+
+  append = (element) ->
+    appendTo element, boardArea
 
   window.shadow = ->
     elements = document.getElementsByClassName('flip-container')
@@ -46,6 +49,7 @@ createGame = ->
         window.intervals.push interval
 
   clearCards = ->
+    clickedElements = []
     elements = document.getElementsByClassName('flip-container')
     [].forEach.call elements, (element) ->
       if element.classList.contains('match')
@@ -53,11 +57,12 @@ createGame = ->
 
       element.classList.remove 'clicked'
 
-    clickedElements = []
-
-  setMatchCards = ->
+  setMatchCards = (callback) ->
     elements = document.getElementsByClassName('clicked')
     [].forEach.call elements, (element) ->
+      if element.classList.contains 'match'
+        return false
+
       # poor mans transitionend right here
       setTimeout ->
         element.classList.add 'match'
@@ -68,12 +73,12 @@ createGame = ->
   cardClicked = ->
     # TODO: if transition in progress, wait until transition has been finished
 
+    if @classList.contains('match')
+      return false
 
     if clickedElements.length == 2
       clearCards()
 
-    if @classList.contains('match')
-      return false
 
     @classList.toggle 'clicked'
     isClicked = @classList.contains('clicked')
@@ -86,17 +91,19 @@ createGame = ->
     if JSON.stringify(lastCard) is JSON.stringify(selectedCard)
       clearCards()
 
-    if lastCard and isClicked
-      if board.checkMatches [selectedCard, lastCard]
-        console.log 'match!'
-        setMatchCards()
-        appendMatchCard(selectedCard)
 
     cardJson = JSON.stringify(selectedCard)
 
     if isClicked
+
       clickedElements.push cardJson
+
+      if clickedElements.length is 2 and board.checkMatches [selectedCard, lastCard]
+        console.log 'match!'
+        setMatchCards appendMatchCard(selectedCard)
+
       lastCard = selectedCard
+
     else
       clickedElements.splice clickedElements.indexOf(cardJson), 1
       lastCard = false
@@ -104,8 +111,7 @@ createGame = ->
     console.log 'text', board.checkCard(selectedCard[0], selectedCard[1])
 
   appendMatchCard = (card) ->
-    console.log "card", card
-    element = append(matchTemplate)
+    element = appendTo(matchTemplate, matchArea)
     element.innerText = board.checkCard(card[0], card[1])
 
   appendCard = (row, card) ->

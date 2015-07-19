@@ -42,18 +42,15 @@ body {
 
   .back {
     transform: rotateX(180deg);
-    background-color: #2ECC40;
-    text-align: center;
-    font-size: 3em;
-    color: white;
-    padding-top: 22px;
+    .backCard();
   }
 }
 
+#matches .match-template,
 .flip-container, .front, .back {
-  width: 100px;
-  height: 100px;
-  max-height: 100px;
+  width: @cardHeight;
+  height: @cardWidth;
+  max-height: @cardHeight;
   overflow: hidden;
 }
 
@@ -72,6 +69,21 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#board {
+  float: left;
+}
+
+#matches {
+  float: right;
+  max-width: 45%;
+
+  .match-template {
+    float: right;
+    .backCard();
+    background-color: darken(@green, 15%);
+  }
 }
 
 
