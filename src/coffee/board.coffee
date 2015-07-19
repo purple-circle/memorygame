@@ -10,12 +10,15 @@ board =
   init: (options) ->
     if options
       @options = @extend(@options, options)
+
     @inited = true
     @calculatePairs()
 
+    # TODO: fix
     if @pairs % 2
       console.log 'Not enough pairs to go around'
       return false
+
     @createBoard()
 
   createBoard: ->
@@ -23,16 +26,16 @@ board =
       console.log 'Run init'
       return false
 
+    rows = @options.boardSize[0] - 1
+    cardsPerRow = @options.boardSize[1] - 1
+
     @board = []
-    i = 0
-    while i < @options.boardSize[0]
+    for i in [0..rows]
       row = []
-      u = 0
-      while u < @options.boardSize[1]
+      for u in [0..cardsPerRow]
         row.push @getFreeCard()
-        u++
       @board.push row
-      i++
+
     @board
 
   calculatePairs: ->
@@ -50,26 +53,28 @@ board =
         .reduce (memo, row) ->
           row.forEach (item) ->
             memo.push item
-            return
           memo
         , []
         .sort (a, b) -> a - b
 
     notFound = false
     notEnoughPairs = false
-    i = @options.minimumCard
-    while i <= @pairs
-      if flatten.indexOf(i) == -1
+
+    for i in [@options.minimumCard..@pairs]
+      if flatten.indexOf(i) is -1
         notFound = i
       if @cards[i] < 2
         notEnoughPairs = true
-      i++
+
     if notEnoughPairs
       return false
-    if flatten.length / 2 != @pairs
+
+    if flatten.length / 2 isnt @pairs
       return false
+
     if notFound
       return false
+
     true
 
   getFreeCard: ->
@@ -77,8 +82,7 @@ board =
     if @cards[card] == 2
       return @getFreeCard()
 
-    if !@cards[card]
-      @cards[card] = 0
+    @cards[card] ?= 0
     @cards[card]++
     card
 
@@ -87,24 +91,23 @@ board =
 
   checkMatches: (data) ->
     # Both selections can't be for the same card
-    if data[0][0] == data[1][0]
-      if data[0][1] == data[1][1]
+    if data[0][0] is data[1][0]
+      if data[0][1] is data[1][1]
         return false
 
     card1 = @checkCard(data[0][0], data[0][1])
     card2 = @checkCard(data[1][0], data[1][1])
 
-    if card1 == null or card2 == null
+    if !card1? or !card2?
       return false
 
-    card1 == card2
+    card1 is card2
 
   removeCard: (data) ->
-    if !@removed[data[0]]
-      @removed[data[0]] = {}
+    @removed[data[0]] ?= {}
+
     @removed[data[0]][data[1]] = @board[data[0]][data[1]]
     @board[data[0]][data[1]] = null
-    return
 
   extend: ->
     extended = {}

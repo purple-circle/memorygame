@@ -8,14 +8,13 @@ getRandomNotRemoved = ->
   first = board.random(0, board.options.boardSize[0] - 1)
   second = board.random(0, board.options.boardSize[1] - 1)
   value = [first, second]
-  if board.removed[value[0]] and board.removed[value[0]][value[1]]
+  if board.removed[value[0]]?[value[1]]
     return getRandomNotRemoved()
   value
 
 success = 0
 
 checkLoopMatches = ->
-  second = undefined
   first = getRandomNotRemoved()
   firstCard = board.checkCard(first[0], first[1])
   if memory[firstCard]
@@ -36,10 +35,8 @@ checkLoopMatches = ->
     success++
 
 randomLoops = 100
-i = 0
-while i < randomLoops
+for i in [0..randomLoops]
   checkLoopMatches()
-  i++
 
 
 successRate = (success / randomLoops * 100).toFixed(2)
