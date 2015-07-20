@@ -2,42 +2,72 @@ app = angular.module 'app', [
   'templates'
 ]
 
-app.directive 'memorygame', ($timeout) ->
+app.directive 'memorygame', ($timeout, $interval) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
-    $scope.rows = 4
-    $scope.cardsPerRow = 5
-    $scope.matches = []
+    $scope.rows = 2
+    $scope.cardsPerRow = 4
 
     clickedElements = []
     lastCard = false
 
-    options =
-      boardSize: [$scope.rows, $scope.cardsPerRow]
+    $scope.gameNumber = -1
+    $scope.timers = []
 
-    board = new Board()
-    gameBoard = board.init(options)
-    boardIsValid = board.validateBoard(gameBoard)
+    stopTimer = ->
+      if $scope.gameTimer
+        $interval.cancel $scope.gameTimer
 
-    if !boardIsValid
-      console.warn 'Board is invalid :('
-      return false
 
-    $scope.cards = []
-    board.board.forEach (row, rowIndex) ->
-      row.forEach (card, cardIndex) ->
+    getDefaultTimerObject = ->
+      game: $scope.gameNumber
+      time: 0
+      tries: 0
+      startTime: new Date()
 
-        data =
-          rowIndex: rowIndex
-          cardIndex: cardIndex
-          number: card
-          cardClass: "card-#{board.random(1, 12)}"
-          clicked: false
-          match: false
 
-        $scope.cards.push data
+    $scope.start = ->
+      stopTimer()
+      $scope.gameEnded = false
+      $scope.gameNumber++
+      $scope.timers.push getDefaultTimerObject()
 
+      $scope.gameTimer = $interval ->
+        $scope.timers[$scope.gameNumber].time++
+      , 1000
+
+
+      $scope.cards = []
+      $scope.matches = []
+      clickedElements = []
+      lastCard = false
+
+      options =
+        boardSize: [$scope.rows, $scope.cardsPerRow]
+
+      $scope.board = new Board()
+      gameBoard = $scope.board.init(options)
+      boardIsValid = $scope.board.validateBoard(gameBoard)
+
+      if !boardIsValid
+        console.warn 'Board is invalid :('
+        return false
+
+      $scope.board.board.forEach (row, rowIndex) ->
+        row.forEach (card, cardIndex) ->
+
+          data =
+            rowIndex: rowIndex
+            cardIndex: cardIndex
+            number: card
+            cardClass: "card-#{$scope.board.random(1, 12)}"
+            clicked: false
+            match: false
+
+          $scope.cards.push data
+
+    $scope.start()
 
     clearCards = ->
       clickedElements = []
@@ -47,13 +77,15 @@ app.directive 'memorygame', ($timeout) ->
 
 
     $scope.toggleCard = (card) ->
-      if card.match
+      if $scope.gameEnded or card.match
         return false
 
       if clickedElements.length == 2
         clearCards()
 
       card.clicked = !card.clicked
+
+      $scope.timers[$scope.gameNumber].tries++
 
       selectedCard = [
         card.rowIndex
@@ -70,7 +102,7 @@ app.directive 'memorygame', ($timeout) ->
         clickedElements.push cardJson
 
         if clickedElements.length is 2
-          if board.checkMatches [selectedCard, lastCard]
+          if $scope.board.checkMatches [selectedCard, lastCard]
             console.log 'match!'
             setMatchCards card
 
@@ -80,11 +112,16 @@ app.directive 'memorygame', ($timeout) ->
         clickedElements.splice clickedElements.indexOf(cardJson), 1
         lastCard = false
 
-      console.log 'text', board.checkCard(selectedCard[0], selectedCard[1])
+      console.log 'text', $scope.board.checkCard(selectedCard[0], selectedCard[1])
 
 
     setMatchCards = (matchCard) ->
       $scope.matches.push matchCard
+
+      if $scope.matches.length is $scope.board.pairs
+        stopTimer()
+        $scope.timers[$scope.gameNumber].endTime = new Date()
+        $scope.gameEnded = true
 
       for card in $scope.cards when card.number is matchCard.number
         card.match = true
@@ -112,6 +149,6 @@ app.directive 'memorygame', ($timeout) ->
         [].forEach.call elements, (element) ->
           interval = setInterval ->
             element.classList.toggle 'shadow'
-          , board.random(300, 2000)
+          , $scope.board.random(300, 2000)
 
           window.intervals.push interval

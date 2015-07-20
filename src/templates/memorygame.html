@@ -1,3 +1,15 @@
+
+<button ng-click="start()">Restart</button>
+
+Time played: {{timers[gameNumber].time}} seconds.
+
+pairs: {{board.pairs}}
+<span ng-if="matches.length == board.pairs">
+  <pre>{{timers | json:2}}</pre>
+</span>
+
+<div class="divider"></div>
+
 <div id="board">
   <span ng-repeat="card in cards">
     <div
