@@ -12,6 +12,7 @@ createGame = ->
   options =
     boardSize: [4, 5]
 
+  board = new Board()
   gameBoard = board.init(options)
   boardIsValid = board.validateBoard(gameBoard)
 
