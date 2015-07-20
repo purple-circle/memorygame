@@ -26,26 +26,37 @@ app.directive 'memorygame', ($timeout, $interval) ->
       tries: 0
       startTime: new Date()
 
-
-    $scope.start = ->
-      stopTimer()
-      $scope.gameEnded = false
-      $scope.gameNumber++
-      $scope.timers.push getDefaultTimerObject()
-
+    startTimer = ->
       $scope.gameTimer = $interval ->
         $scope.timers[$scope.gameNumber].time++
       , 1000
 
 
-      $scope.cards = []
+    $scope.reset = ->
       $scope.matches = []
       clickedElements = []
       lastCard = false
+      if $scope.gameEnded
+        startTimer()
+
+      $scope.gameEnded = false
+      if $scope.cards?.length
+        for card in $scope.cards
+          card.match = false
+          card.clicked = false
+
+    $scope.start = ->
+      $scope.reset()
+      stopTimer()
+      $scope.gameNumber++
+      $scope.timers.push getDefaultTimerObject()
+
+      startTimer()
 
       options =
         boardSize: [$scope.rows, $scope.cardsPerRow]
 
+      $scope.cards = []
       $scope.board = new Board()
       gameBoard = $scope.board.init(options)
       boardIsValid = $scope.board.validateBoard(gameBoard)
