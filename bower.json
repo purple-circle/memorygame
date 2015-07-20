@@ -11,8 +11,12 @@
     "node_modules",
     "bower_components",
     "client/js/node_modules/bower_components",
+    "client",
     "test",
     "tests",
     "build"
-  ]
+  ],
+  "dependencies": {
+    "angular": "~1.4.3"
+  }
 }

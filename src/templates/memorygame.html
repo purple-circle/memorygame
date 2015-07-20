@@ -1,0 +1,27 @@
+<div id="board">
+  <span ng-repeat="card in cards">
+    <div
+      class="flip-container {{card.cardClass}}"
+      ng-click="toggleCard(card)"
+      ng-class="{clicked: card.clicked}">
+
+      <div class="flipper">
+        <div class="front"></div>
+        <div class="back" ng-class="{match: card.match}">
+          {{card.number}}
+        </div>
+      </div>
+
+    </div>
+
+    <div ng-if="$index % cardsPerRow === cardsPerRow - 1" class="divider"></div>
+  </span>
+</div>
+
+<div id="matches">
+  <div ng-repeat="match in matches" class="match">
+    {{match.number}}
+  </div>
+</div>
+
+<div class="divider"></div>

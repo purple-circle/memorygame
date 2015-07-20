@@ -10,6 +10,9 @@ minifycss = require('gulp-minify-css')
 postcss = require('gulp-postcss')
 autoprefixer = require('autoprefixer-core')
 
+# Angular
+ngTemplates = require('gulp-ng-templates')
+ngAnnotate = require('gulp-ng-annotate')
 
 # Code linting
 coffeelint = require('gulp-coffeelint')
@@ -41,6 +44,7 @@ gulp.task 'coffee', ['coffeelint'], ->
     .src(coffeeSrc)
     .pipe(plumber({errorHandler}))
     .pipe(coffee())
+    .pipe(ngAnnotate())
     .on('error', gutil.log)
     .pipe(gulp.dest('build/js'))
 
@@ -60,12 +64,20 @@ gulp.task 'autoprefixer', ['less'], ->
     .pipe gulp.dest('build/css')
 
 
+gulp.task "partials", ->
+  gulp
+    .src('src/templates/**/*.html')
+    .pipe(ngTemplates())
+    .pipe(gulp.dest("build/templates"))
+
+
 gulp.task 'buildcss', ['autoprefixer']
 
-gulp.task 'default', ['autoprefixer', 'coffee', 'watch']
+gulp.task 'default', ['autoprefixer', 'coffee', 'partials', 'watch']
 
 gulp.task 'watch', ->
   gulp.watch 'src/less/**/*.less', ['buildcss']
   gulp.watch 'src/coffee/**/*.coffee', ['coffee']
+  gulp.watch 'src/templates/**/*.html', ['partials']
 
 

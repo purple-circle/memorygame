@@ -3,35 +3,17 @@
   <title>Memorygame</title>
 
   <link rel="stylesheet" href="build/css/style.css">
+
+  <script src="client/bower_components/angular/angular.min.js"></script>
+
+  <script src="build/templates/templates.min.js"></script>
   <script src="build/js/board.js"></script>
   <script src="build/js/game.js"></script>
 
 </head>
-<body>
+<body ng-app="app">
 
-  <div id="divider"></div>
-
-  <div class="match-template"></div>
-
-  <div class="template">
-    <div class="flip-container">
-      <div class="flipper">
-        <div class="front">
-          <!-- front content -->
-        </div>
-        <div class="back">
-          <!-- back content -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div id="board"></div>
-
-  <div id="matches"></div>
-
-
+  <memorygame></memorygame>
 
 </body>
 </html>

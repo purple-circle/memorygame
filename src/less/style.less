@@ -5,7 +5,7 @@ body {
   font-smoothing: antialiased;
 }
 
-#divider {
+.divider {
   clear: both;
 }
 
@@ -19,11 +19,6 @@ body {
 
   &.shadow {
     box-shadow: 0.1px 0.1px 50px saddlebrown;
-  }
-
-  &.match .back {
-    transition: background-color 1.6s linear;
-    background-color: darken(@green, 15%);
   }
 
   &.clicked {
@@ -43,10 +38,14 @@ body {
   .back {
     transform: rotateX(180deg);
     .backCard();
+
+    &.match {
+      background-color: @darkerGreen;
+    }
   }
 }
 
-#matches .match-template,
+#matches .match,
 .flip-container, .front, .back {
   width: @cardHeight;
   height: @cardWidth;
@@ -79,10 +78,10 @@ body {
   float: right;
   max-width: 45%;
 
-  .match-template {
+  .match {
     float: right;
     .backCard();
-    background-color: darken(@green, 15%);
+    background-color: @darkerGreen;
   }
 }
 
