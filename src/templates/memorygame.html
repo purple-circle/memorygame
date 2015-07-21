@@ -42,7 +42,10 @@ pairs: {{board.pairs}}
 
       <div class="flipper">
         <div class="front"></div>
-        <div class="back" ng-class="{match: card.match}">
+        <div
+          class="back"
+          style="background-image: url('{{card.image}}');"
+          ng-class="{match: card.match}">
           {{card.number}}
         </div>
       </div>
@@ -54,7 +57,10 @@ pairs: {{board.pairs}}
 </div>
 
 <div id="matches">
-  <div ng-repeat="match in matches" class="match">
+  <div
+    ng-repeat="match in matches"
+    class="match"
+    style="background-image: url('{{match.image}}');">
     {{match.number}}
   </div>
 </div>

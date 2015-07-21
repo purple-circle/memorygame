@@ -3,7 +3,36 @@ app = angular.module 'app', [
   'imgurUpload'
 ]
 
-app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
+app.service 'api', ->
+  preloadImage: (url) ->
+    img = new Image()
+    img.src = url
+
+  getImgurIds: ->
+    [
+      'MKP7m'
+      'imG3t'
+      'vtQ3QPm'
+      'Cxfr0m9'
+    ]
+
+  # TODO: implement something from lodash etc
+  shuffle: (array) ->
+    counter = array.length
+    # While there are elements in the array
+    while counter > 0
+      # Pick a random index
+      index = Math.floor(Math.random() * counter)
+      # Decrease counter by 1
+      counter--
+      # And swap the last element with it
+      temp = array[counter]
+      array[counter] = array[index]
+      array[index] = temp
+    array
+
+
+app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
@@ -18,6 +47,14 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
 
     # TODO: move to app.config
     imgurUpload.setClientId "c3adff5c1adb461"
+
+    $scope.images = api.shuffle api.getImgurIds()
+
+    getImgurUrlFromId = (id) ->
+      "http://i.imgur.com/#{id}.jpg"
+
+    for id in $scope.images
+      api.preloadImage getImgurUrlFromId id
 
     stopTimer = ->
       if $scope.gameTimer
@@ -73,6 +110,7 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
         row.forEach (card, cardIndex) ->
 
           data =
+            image: getImgurUrlFromId $scope.images[card-1]
             rowIndex: rowIndex
             cardIndex: cardIndex
             number: card
