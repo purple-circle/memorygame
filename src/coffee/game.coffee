@@ -1,8 +1,9 @@
 app = angular.module 'app', [
   'templates'
+  'imgurUpload'
 ]
 
-app.directive 'memorygame', ($timeout, $interval) ->
+app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
@@ -14,6 +15,9 @@ app.directive 'memorygame', ($timeout, $interval) ->
 
     $scope.gameNumber = -1
     $scope.timers = []
+
+    # TODO: move to app.config
+    imgurUpload.setClientId 123
 
     stopTimer = ->
       if $scope.gameTimer
@@ -105,9 +109,8 @@ app.directive 'memorygame', ($timeout, $interval) ->
 
       cardJson = JSON.stringify(selectedCard)
 
-      # TODO: refactor, too drunk now
-      if JSON.stringify(lastCard) is cardJson
-        clearCards()
+      if angular.equals lastCard, selectedCard
+        return clearCards()
 
       if card.clicked
         clickedElements.push cardJson
@@ -163,3 +166,45 @@ app.directive 'memorygame', ($timeout, $interval) ->
           , $scope.board.random(300, 2000)
 
           window.intervals.push interval
+
+
+    $scope.selectFile = ->
+      document.getElementById("image-upload").click()
+      document.getElementsByClassName("select-file-container")[0].blur()
+
+    hideProgressBarTimeout = null
+
+    hideProgressBar = ->
+      if hideProgressBarTimeout
+        $timeout.cancel(hideProgressBarTimeout)
+
+      hideProgressBarTimeout = $timeout ->
+        $scope.showProgress = false
+      , 1000
+
+    $scope.uploadFile = (element) ->
+      if !element?.files?[0]?
+        return
+
+      #ga('send', 'event', 'uploaded image')
+
+      upload_success = (result) ->
+        console.log "result", result
+        angular.element(element).val(null)
+        hideProgressBar()
+
+      upload_error = (err) ->
+        console.log "err", err
+        #ga('send', 'event', 'image upload error', JSON.stringify(err))
+        hideProgressBar()
+
+      upload_notify = (progress) ->
+        $timeout ->
+          $scope.uploadProgress = progress
+
+      $scope.showProgress = true
+      $scope.uploadProgress = 0
+
+      imgurUpload
+        .upload(element.files[0])
+        .then upload_success, upload_error, upload_notify

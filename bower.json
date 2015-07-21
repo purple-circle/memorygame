@@ -17,6 +17,7 @@
     "build"
   ],
   "dependencies": {
-    "angular": "~1.4.3"
+    "angular": "~1.4.3",
+    "angular-imgur-upload": "~0.0.1"
   }
 }

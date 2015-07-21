@@ -5,7 +5,30 @@
 Time played: {{timers[gameNumber].time}} seconds.
 
 pairs: {{board.pairs}}
-<span ng-if="matches.length == board.pairs">
+<span ng-if="gameEnded">
+  Congratulations!<br>
+  Stats:<br>
+  <ul>
+    <li>Tries: {{timers[gameNumber].tries}}</li>
+    <li>Time: {{timers[gameNumber].time}}</li>
+    <li>Started: {{timers[gameNumber].startTime}}</li>
+    <li>Ended: {{timers[gameNumber].endTime}}</li>
+  </ul>
+
+  Upload some images for the game?<br>
+
+  <input type="file" onchange="angular.element(this).scope().uploadFile(this)" />
+
+  <button
+    type="button"
+    aria-label="Select picture"
+    class="select-file-container"
+    ng-click="selectFile()">
+    Select picture
+   </button>
+
+   <progress min="0" max="100" value="{{uploadProgress}}"></progress>
+
   <pre>{{timers | json:2}}</pre>
 </span>
 
