@@ -17,17 +17,16 @@ pairs: {{board.pairs}}
 
   Upload some images for the game?<br>
 
-  <input type="file" onchange="angular.element(this).scope().uploadFile(this)" />
+  <input type="file" id="image-upload" onchange="angular.element(this).scope().uploadFile(this)" />
 
   <button
     type="button"
     aria-label="Select picture"
-    class="select-file-container"
     ng-click="selectFile()">
     Select picture
    </button>
 
-   <progress min="0" max="100" value="{{uploadProgress}}"></progress>
+   <progress min="0" max="100" value="{{uploadProgress}}" ng-if="showProgress"></progress>
 
   <pre>{{timers | json:2}}</pre>
 </span>

@@ -8,7 +8,7 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
   templateUrl: 'memorygame.html'
   link: ($scope) ->
     $scope.rows = 2
-    $scope.cardsPerRow = 4
+    $scope.cardsPerRow = 2
 
     clickedElements = []
     lastCard = false
@@ -17,7 +17,7 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
     $scope.timers = []
 
     # TODO: move to app.config
-    imgurUpload.setClientId 123
+    imgurUpload.setClientId "c3adff5c1adb461"
 
     stopTimer = ->
       if $scope.gameTimer
@@ -170,7 +170,6 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
 
     $scope.selectFile = ->
       document.getElementById("image-upload").click()
-      document.getElementsByClassName("select-file-container")[0].blur()
 
     hideProgressBarTimeout = null
 
@@ -192,6 +191,10 @@ app.directive 'memorygame', ($timeout, $interval, imgurUpload) ->
         console.log "result", result
         angular.element(element).val(null)
         hideProgressBar()
+
+        link = result?.data?.link
+
+        console.log "link", link
 
       upload_error = (err) ->
         console.log "err", err
