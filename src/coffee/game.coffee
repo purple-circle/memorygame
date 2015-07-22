@@ -16,6 +16,9 @@ app.service 'api', ->
       'Cxfr0m9'
     ]
 
+  getImgurUrlFromId: (id) ->
+    "http://i.imgur.com/#{id}.jpg"
+
   # TODO: implement something from lodash etc
   shuffle: (array) ->
     counter = array.length
@@ -47,14 +50,6 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
 
     # TODO: move to app.config
     imgurUpload.setClientId "c3adff5c1adb461"
-
-    $scope.images = api.shuffle api.getImgurIds()
-
-    getImgurUrlFromId = (id) ->
-      "http://i.imgur.com/#{id}.jpg"
-
-    for id in $scope.images
-      api.preloadImage getImgurUrlFromId id
 
     stopTimer = ->
       if $scope.gameTimer
@@ -102,6 +97,11 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
       gameBoard = $scope.board.init(options)
       boardIsValid = $scope.board.validateBoard(gameBoard)
 
+      $scope.images = api.shuffle(api.getImgurIds())[0..$scope.board.pairs-1]
+
+      for id in $scope.images
+        api.preloadImage api.getImgurUrlFromId id
+
       if !boardIsValid
         console.warn 'Board is invalid :('
         return false
@@ -110,7 +110,7 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
         row.forEach (card, cardIndex) ->
 
           data =
-            image: getImgurUrlFromId $scope.images[card-1]
+            image: api.getImgurUrlFromId $scope.images[card-1]
             rowIndex: rowIndex
             cardIndex: cardIndex
             number: card
