@@ -1,38 +1,3 @@
-
-<button ng-click="start()">Restart game</button>
-<button ng-click="reset()">Reset current</button>
-
-Time played: {{timers[gameNumber].time}} seconds.
-
-pairs: {{board.pairs}}
-<span ng-if="gameEnded">
-  Congratulations!<br>
-  Stats:<br>
-  <ul>
-    <li>Tries: {{timers[gameNumber].tries}}</li>
-    <li>Time: {{timers[gameNumber].time}}</li>
-    <li>Started: {{timers[gameNumber].startTime}}</li>
-    <li>Ended: {{timers[gameNumber].endTime}}</li>
-  </ul>
-
-  Upload some images for the game?<br>
-
-  <input type="file" id="image-upload" onchange="angular.element(this).scope().uploadFile(this)" />
-
-  <button
-    type="button"
-    aria-label="Select picture"
-    ng-click="selectFile()">
-    Select picture
-   </button>
-
-   <progress min="0" max="100" value="{{uploadProgress}}" ng-if="showProgress"></progress>
-
-  <pre>{{timers | json:2}}</pre>
-</span>
-
-<div class="divider"></div>
-
 <div id="board">
   <span ng-repeat="card in cards">
     <div
@@ -56,13 +21,55 @@ pairs: {{board.pairs}}
   </span>
 </div>
 
-<div id="matches">
-  <div
-    ng-repeat="match in matches"
-    class="match"
-    style="background-image: url('{{match.image}}');">
-    {{match.number}}
+
+<div class="pull-right">
+
+  <div id="matches">
+    <div
+      ng-repeat="match in matches"
+      class="match"
+      style="background-image: url('{{match.image}}');">
+      {{match.number}}
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <div class="game-stuff">
+
+    <p>
+      <button ng-click="start()">Restart game</button>
+      <button ng-click="reset()">Reset current</button>
+    </p>
+
+    Time played: {{timers[gameNumber].time}} seconds.
+
+    pairs: {{board.pairs}}
+    <span ng-if="gameEnded">
+      Congratulations!<br>
+      Stats:<br>
+      <ul>
+        <li>Tries: {{timers[gameNumber].tries}}</li>
+        <li>Time: {{timers[gameNumber].time}}</li>
+        <li>Started: {{timers[gameNumber].startTime}}</li>
+        <li>Ended: {{timers[gameNumber].endTime}}</li>
+      </ul>
+
+      Upload some images for the game?<br>
+
+      <input type="file" id="image-upload" onchange="angular.element(this).scope().uploadFile(this)" />
+
+      <button
+        type="button"
+        aria-label="Select picture"
+        ng-click="selectFile()">
+        Select picture
+       </button>
+
+       <progress min="0" max="100" value="{{uploadProgress}}" ng-if="showProgress"></progress>
+
+      <pre>{{timers | json:2}}</pre>
+    </span>
+
   </div>
 </div>
-
 <div class="divider"></div>
