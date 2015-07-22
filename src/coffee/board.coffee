@@ -80,7 +80,7 @@ Board = ->
 
     getFreeCard: ->
       card = @random(@options.minimumCard, @pairs)
-      if @cards[card] == 2
+      if @cards[card] is 2
         return @getFreeCard()
 
       @cards[card] ?= 0

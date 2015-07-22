@@ -5,99 +5,111 @@ body {
   font-smoothing: antialiased;
 }
 
-.divider {
-  clear: both;
-}
-
-.flip-container {
-  cursor: pointer;
-  float: left;
-  perspective: 1000;
-  transform: translate3d(0,0,0);
-  transform-style: preserve-3d;
-  position: relative;
-
-  &.shadow {
-    box-shadow: 0.1px 0.1px 50px saddlebrown;
+memorygame {
+  .divider {
+    clear: both;
   }
 
-  &.clicked {
-    .back {
-      transform: rotateX(0deg);
+  .flip-container {
+    cursor: pointer;
+    float: left;
+    perspective: 1000;
+    transform: translate3d(0,0,0);
+    transform-style: preserve-3d;
+    position: relative;
+
+    &.shadow {
+      box-shadow: 0.1px 0.1px 50px saddlebrown;
     }
+
+    &.clicked {
+      .back {
+        transform: rotateX(0deg);
+      }
+      .front {
+        transform: rotateX(180deg);
+      }
+    }
+
     .front {
+      z-index: 2;
+      transform: rotateY(0deg);
+    }
+
+    .back {
       transform: rotateX(180deg);
+      .backCard();
+
+      &.match {
+        background-color: @darkerGreen;
+      }
     }
   }
 
-  .front {
-    z-index: 2;
-    transform: rotateY(0deg);
+  #matches .match,
+  .flip-container, .front, .back {
+    width: @cardHeight;
+    height: @cardWidth;
+    max-height: @cardHeight;
+    overflow: hidden;
   }
 
-  .back {
-    transform: rotateX(180deg);
-    .backCard();
+  .flipper {
+    transition: 0.6s linear;
+    transform-style: preserve-3d;
+    position: relative;
+  }
 
-    &.match {
+  .front, .back {
+    backface-visibility: hidden;
+    transition: 0.6s;
+    transform: translate3d(0,0,0);
+    transform-style: preserve-3d;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #board {
+    float: left;
+  }
+
+  .pull-right {
+    float: right;
+    width: 45%;
+  }
+
+  .game-stuff {
+    margin-bottom: @cardHeight;
+  }
+
+  #matches {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 2px solid @black;
+    background-color: @silver;
+    height: @cardHeight;
+
+    .match {
+      .backCard();
+      float: right;
       background-color: @darkerGreen;
     }
   }
-}
 
-#matches .match,
-.flip-container, .front, .back {
-  width: @cardHeight;
-  height: @cardWidth;
-  max-height: @cardHeight;
-  overflow: hidden;
-}
-
-.flipper {
-  transition: 0.6s linear;
-  transform-style: preserve-3d;
-  position: relative;
-}
-
-.front, .back {
-  backface-visibility: hidden;
-  transition: 0.6s;
-  transform: translate3d(0,0,0);
-  transform-style: preserve-3d;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-#board {
-  float: left;
-}
-
-.pull-right {
-  float: right;
-  width: 45%;
-}
-
-#matches {
-  .match {
-    float: right;
-    .backCard();
-    background-color: @darkerGreen;
+  input[type="file"] {
+    display: none;
   }
-}
 
-
-.createCardFronts(@iterator:1) when(@iterator <= length(@colors)) {
-  .card-@{iterator} .front {
-    background-color: extract(@colors, @iterator);
+  .createCardFronts(@iterator:1) when(@iterator <= length(@colors)) {
+    .card-@{iterator} .front {
+      background-color: extract(@colors, @iterator);
+    }
+    .createCardFronts((@iterator + 1));
   }
-  .createCardFronts((@iterator + 1));
-}
-.createCardFronts();
+  .createCardFronts();
 
-
-
-input[type="file"] {
-  display: none;
 }

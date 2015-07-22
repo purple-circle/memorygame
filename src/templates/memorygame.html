@@ -11,7 +11,7 @@
           class="back"
           style="background-image: url('{{card.image}}');"
           ng-class="{match: card.match}">
-          {{card.number}}
+          <span ng-if="showNumber">{{card.number}}</span>
         </div>
       </div>
 
@@ -23,22 +23,12 @@
 
 
 <div class="pull-right">
-
-  <div id="matches">
-    <div
-      ng-repeat="match in matches"
-      class="match"
-      style="background-image: url('{{match.image}}');">
-      {{match.number}}
-    </div>
-  </div>
-  <div class="divider"></div>
-
   <div class="game-stuff">
 
     <p>
       <button ng-click="start()">Restart game</button>
       <button ng-click="reset()">Reset current</button>
+      <button ng-click="showNumber = !showNumber">Toggle number on card</button>
     </p>
 
     Time played: {{timers[gameNumber].time}} seconds.
@@ -54,6 +44,11 @@
         <li>Ended: {{timers[gameNumber].endTime}}</li>
       </ul>
 
+      <p>
+        History:
+        <pre>{{timers | json:2}}</pre>
+      </p>
+
       Upload some images for the game?<br>
 
       <input type="file" id="image-upload" onchange="angular.element(this).scope().uploadFile(this)" />
@@ -67,9 +62,19 @@
 
        <progress min="0" max="100" value="{{uploadProgress}}" ng-if="showProgress"></progress>
 
-      <pre>{{timers | json:2}}</pre>
     </span>
 
+  </div>
+</div>
+<div class="divider"></div>
+
+
+<div id="matches">
+  <div
+    ng-repeat="match in matches"
+    class="match"
+    style="background-image: url('{{match.image}}');">
+    <span ng-if="showNumber">{{match.number}}</span>
   </div>
 </div>
 <div class="divider"></div>

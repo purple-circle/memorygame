@@ -40,13 +40,15 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
   templateUrl: 'memorygame.html'
   link: ($scope) ->
     $scope.rows = 2
-    $scope.cardsPerRow = 2
+    $scope.cardsPerRow = 4
 
     clickedElements = []
     lastCard = false
 
     $scope.gameNumber = -1
     $scope.timers = []
+
+    $scope.showNumber = false
 
     # TODO: move to app.config
     imgurUpload.setClientId "c3adff5c1adb461"
@@ -133,7 +135,7 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
       if $scope.gameEnded or card.match
         return false
 
-      if clickedElements.length == 2
+      if clickedElements.length is 2
         clearCards()
 
       card.clicked = !card.clicked
@@ -177,6 +179,7 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
 
       for card in $scope.cards when card.number is matchCard.number
         card.match = true
+        card.matchTime = new Date()
 
       $timeout ->
         clearCards()
