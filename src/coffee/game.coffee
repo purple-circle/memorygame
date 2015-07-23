@@ -43,7 +43,16 @@ app.service 'api', ->
       'Eo2obrh'
       'OCoo4jE'
       'shTqv5n'
-
+      '8hlWZtl'
+      'GeYMhoh'
+      'vWWHaWr'
+      'c6uGFzT'
+      'nBiT78L'
+      'IOqBM8T'
+      'q0C7BKR'
+      '1g3nT4K'
+      '3L05a1D'
+      'RP0X5F0'
     ]
 
   getImgurUrlFromId: (id) ->
@@ -69,8 +78,8 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
-    $scope.rows = 3
-    $scope.cardsPerRow = 4
+    $scope.rows = 4
+    $scope.cardsPerRow = 6
 
     clickedElements = []
     lastCard = false
