@@ -3,7 +3,9 @@
     <div
       class="flip-container {{card.cardClass}}"
       ng-click="toggleCard(card)"
-      ng-class="{clicked: card.clicked}">
+      ng-class="{clicked: card.clicked}"
+      style="width: {{cardWidth}}px;"
+      >
 
       <div class="flipper">
         <div class="front"></div>

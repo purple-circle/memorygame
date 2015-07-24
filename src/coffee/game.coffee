@@ -74,7 +74,7 @@ app.service 'api', ->
     array
 
 
-app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
+app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
@@ -121,6 +121,14 @@ app.directive 'memorygame', ($timeout, $interval, api, imgurUpload) ->
         for card in $scope.cards
           card.match = false
           card.clicked = false
+
+    calculateCardWidth = ->
+      $scope.cardWidth = Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
+
+
+    angular.element($window).bind "resize", calculateCardWidth
+
+    calculateCardWidth()
 
     $scope.start = ->
       $scope.reset()
