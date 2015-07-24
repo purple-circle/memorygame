@@ -51,7 +51,7 @@ memorygame {
   .front,
   .back {
     width: 100%;
-    height: @cardWidth;
+    height: @cardHeight;
     max-height: @cardHeight;
     overflow: hidden;
   }
@@ -99,6 +99,8 @@ memorygame {
       .backCard();
       float: left;
       background-color: @darkerGreen;
+      width: @cardHeight;
+      height: @cardHeight;
     }
   }
 
