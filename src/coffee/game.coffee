@@ -78,6 +78,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
   restrict: 'E'
   templateUrl: 'memorygame.html'
   link: ($scope) ->
+    hideProgressBarTimeout = null
     $scope.rows = 4
     $scope.cardsPerRow = 6
 
@@ -92,6 +93,14 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
     # TODO: move to app.config
     imgurUpload.setClientId "c3adff5c1adb461"
 
+
+    calculateCardWidth = ->
+      $scope.cardWidth = Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
+
+
+    angular.element($window).bind "resize", calculateCardWidth
+    calculateCardWidth()
+
     stopTimer = ->
       if $scope.gameTimer
         $interval.cancel $scope.gameTimer
@@ -102,6 +111,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       time: 0
       tries: 0
       startTime: new Date()
+
 
     startTimer = ->
       $scope.gameTimer = $interval ->
@@ -122,13 +132,6 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
           card.match = false
           card.clicked = false
 
-    calculateCardWidth = ->
-      $scope.cardWidth = Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
-
-
-    angular.element($window).bind "resize", calculateCardWidth
-
-    calculateCardWidth()
 
     $scope.start = ->
       $scope.reset()
@@ -213,8 +216,6 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
         clickedElements.splice clickedElements.indexOf(cardJson), 1
         lastCard = false
 
-      console.log 'text', $scope.board.checkCard(selectedCard[0], selectedCard[1])
-
 
     setMatchCards = (matchCard) ->
       $scope.matches.push matchCard
@@ -259,7 +260,6 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
     $scope.selectFile = ->
       document.getElementById("image-upload").click()
 
-    hideProgressBarTimeout = null
 
     hideProgressBar = ->
       if hideProgressBarTimeout
@@ -268,6 +268,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       hideProgressBarTimeout = $timeout ->
         $scope.showProgress = false
       , 1000
+
 
     $scope.uploadFile = (element) ->
       if !element?.files?[0]?
@@ -284,14 +285,17 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
         console.log "link", link
 
+
       upload_error = (err) ->
         console.log "err", err
         #ga('send', 'event', 'image upload error', JSON.stringify(err))
         hideProgressBar()
 
+
       upload_notify = (progress) ->
         $timeout ->
           $scope.uploadProgress = progress
+
 
       $scope.showProgress = true
       $scope.uploadProgress = 0
@@ -299,3 +303,4 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       imgurUpload
         .upload(element.files[0])
         .then upload_success, upload_error, upload_notify
+
