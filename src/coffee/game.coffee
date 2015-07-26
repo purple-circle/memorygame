@@ -95,7 +95,8 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
 
     calculateCardWidth = ->
-      $scope.cardWidth = Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
+      $scope.cardWidth =
+        Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
 
 
     angular.element($window).bind "resize", calculateCardWidth
