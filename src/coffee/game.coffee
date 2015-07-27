@@ -94,13 +94,11 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
     imgurUpload.setClientId "c3adff5c1adb461"
 
 
-    calculateCardWidth = ->
-      $scope.cardWidth =
-        Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
-
-
-    angular.element($window).bind "resize", calculateCardWidth
-    calculateCardWidth()
+    # calculateCardWidth = ->
+    #   $scope.cardWidth =
+    #     Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
+    # angular.element($window).bind "resize", calculateCardWidth
+    # calculateCardWidth()
 
     stopTimer = ->
       if $scope.gameTimer
