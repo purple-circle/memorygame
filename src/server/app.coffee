@@ -74,7 +74,6 @@ app.use (err, req, res, next) ->
   res.status err.status or 500
   res.render view,
     message: err.message
-    #error: {}
     error: err
     stack: err.stack
 

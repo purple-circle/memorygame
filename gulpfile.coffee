@@ -93,11 +93,17 @@ gulp.task "partials", ->
     .pipe(gulp.dest('build/templates'))
 
 
+gulp.task 'copy-views', ->
+  gulp.src('src/server/views/**/*.ejs', {base: 'src/server/views'})
+    .pipe(gulp.dest('build/server/views'))
+
+
 gulp.task 'buildcss', ['autoprefixer']
 
-gulp.task 'default', ['autoprefixer', 'coffee', 'server-coffee', 'partials'], ->
+gulp.task 'default', ['autoprefixer', 'coffee', 'server-coffee', 'partials', 'copy-views'], ->
   gulp.watch lessSrc, ['buildcss']
   gulp.watch coffeeSrc, ['coffee']
   gulp.watch coffeeServerSrc, ['server-coffee']
   gulp.watch 'src/templates/**/*.html', ['partials']
+  gulp.watch 'src/server/views/**/*.ejs', ['copy-views']
 
