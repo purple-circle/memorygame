@@ -1,80 +1,20 @@
-<div id="board">
-  <span ng-repeat="card in cards">
-    <div
-      class="flip-container {{card.cardClass}}"
-      ng-click="toggleCard(card)"
-      ng-class="{clicked: card.clicked}">
+<html>
+<head>
+  <title>Memorygame</title>
 
-      <div class="flipper">
-        <div class="front"></div>
-        <div
-          class="back"
-          style="background-image: url('{{card.image}}');"
-          ng-class="{match: card.match}">
-          <span ng-if="showNumber">{{card.number}}</span>
-        </div>
-      </div>
+  <link rel="stylesheet" href="build/css/style.css">
 
-    </div>
+  <script src="client/bower_components/angular/angular.min.js"></script>
+  <script src="client/bower_components/angular-imgur-upload/dist/angular-imgur-upload.min.js"></script>
 
-    <div ng-if="$index % cardsPerRow === cardsPerRow - 1" class="divider"></div>
-  </span>
-</div>
+  <script src="build/templates/templates.min.js"></script>
+  <script src="build/js/board.js"></script>
+  <script src="build/js/game.js"></script>
 
+</head>
+<body ng-app="app">
 
-<div class="pull-right">
-  <div class="game-stuff">
+  <memorygame></memorygame>
 
-    <p>
-      <button ng-click="start()">Restart game</button>
-      <button ng-click="reset()">Reset current</button>
-      <button ng-click="showNumber = !showNumber">Toggle number on card</button>
-    </p>
-
-    Time played: {{timers[gameNumber].time}} seconds.
-
-    pairs: {{board.pairs}}
-    <span ng-if="gameEnded">
-      Congratulations!<br>
-      Stats:<br>
-      <ul>
-        <li>Tries: {{timers[gameNumber].tries}}</li>
-        <li>Time: {{timers[gameNumber].time}}</li>
-        <li>Started: {{timers[gameNumber].startTime}}</li>
-        <li>Ended: {{timers[gameNumber].endTime}}</li>
-      </ul>
-
-      <p>
-        History:
-        <pre>{{timers | json:2}}</pre>
-      </p>
-
-      Upload some images for the game?<br>
-
-      <input type="file" id="image-upload" onchange="angular.element(this).scope().uploadFile(this)" />
-
-      <button
-        type="button"
-        aria-label="Select picture"
-        ng-click="selectFile()">
-        Select picture
-       </button>
-
-       <progress min="0" max="100" value="{{uploadProgress}}" ng-if="showProgress"></progress>
-
-    </span>
-
-  </div>
-</div>
-<div class="divider"></div>
-
-
-<div id="matches">
-  <div
-    ng-repeat="match in matches"
-    class="match"
-    style="background-image: url('{{match.image}}');">
-    <span ng-if="showNumber">{{match.number}}</span>
-  </div>
-</div>
-<div class="divider"></div>
+</body>
+</html>
