@@ -256,10 +256,6 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
           window.intervals.push interval
 
 
-    $scope.selectFile = ->
-      document.getElementById("image-upload").click()
-
-
     hideProgressBar = ->
       if hideProgressBarTimeout
         $timeout.cancel(hideProgressBarTimeout)
@@ -269,37 +265,40 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       , 1000
 
 
-    $scope.uploadFile = (element) ->
-      if !element?.files?[0]?
-        return
+    $scope.selectFile = ->
+      element = document.getElementById('image-upload')
+      element.click()
+      element.onchange = ->
+        if !this?.files?[0]?
+          return
 
-      #ga('send', 'event', 'uploaded image')
+        #ga('send', 'event', 'uploaded image')
 
-      upload_success = (result) ->
-        console.log "result", result
-        angular.element(element).val(null)
-        hideProgressBar()
+        upload_success = (result) ->
+          console.log "result", result
+          element.val(null)
+          hideProgressBar()
 
-        link = result?.data?.link
+          link = result?.data?.link
 
-        console.log "link", link
-
-
-      upload_error = (err) ->
-        console.log "err", err
-        #ga('send', 'event', 'image upload error', JSON.stringify(err))
-        hideProgressBar()
+          console.log "link", link
 
 
-      upload_notify = (progress) ->
-        $timeout ->
-          $scope.uploadProgress = progress
+        upload_error = (err) ->
+          console.log "err", err
+          #ga('send', 'event', 'image upload error', JSON.stringify(err))
+          hideProgressBar()
 
 
-      $scope.showProgress = true
-      $scope.uploadProgress = 0
+        upload_notify = (progress) ->
+          $timeout ->
+            $scope.uploadProgress = progress
 
-      imgurUpload
-        .upload(element.files[0])
-        .then upload_success, upload_error, upload_notify
+
+        $scope.showProgress = true
+        $scope.uploadProgress = 0
+
+        imgurUpload
+          .upload(this.files[0])
+          .then upload_success, upload_error, upload_notify
 
