@@ -91,14 +91,8 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
     $scope.showNumber = false
 
     # TODO: move to app.config
-    imgurUpload.setClientId "c3adff5c1adb461"
+    imgurUpload.setClientId 'c3adff5c1adb461'
 
-
-    # calculateCardWidth = ->
-    #   $scope.cardWidth =
-    #     Math.floor(($window.innerWidth * 0.7) / $scope.cardsPerRow)
-    # angular.element($window).bind "resize", calculateCardWidth
-    # calculateCardWidth()
 
     stopTimer = ->
       if $scope.gameTimer
@@ -275,7 +269,6 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
         #ga('send', 'event', 'uploaded image')
 
         upload_success = (result) ->
-          console.log "result", result
           element.val(null)
           hideProgressBar()
 
