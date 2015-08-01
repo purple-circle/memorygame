@@ -34,7 +34,7 @@ app.use sessionStore
 #app.use favicon(__dirname + '/public/images/favicons/favicon.ico')
 
 # view engine setup
-app.use express.static(path.join(__dirname, 'client'))
+app.use express.static(path.join(__dirname, '../../'))
 app.set 'views', path.join(__dirname, 'views')
 app.set 'view engine', 'ejs'
 app.use bodyParser.json()
