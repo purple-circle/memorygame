@@ -1,14 +1,13 @@
 'use strict'
 express = require('express')
-
 images = require('../models/images')
 
 router = express.Router()
 
 router.get '/', (req, res) ->
-  res.render 'index', {
+  res.render 'index',
     sid: req.sessionID
-  }
+
 
 router.post '/api/save-image', (req, res) ->
   images

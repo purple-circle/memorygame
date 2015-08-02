@@ -5,16 +5,15 @@ cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 passport = require('passport')
 settings = require('./settings')
+session = require('express-session')
+MongoStore = require('connect-mongo')(session)
+mongoStore = new MongoStore db: settings.db
 
 require('./mongo')(settings)
 
 # Routes
 routes = require('./routes/index')
-session = require('express-session')
 
-
-MongoStore = require('connect-mongo')(session)
-mongoStore = new MongoStore db: settings.db
 
 app = express()
 

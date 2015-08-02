@@ -127,6 +127,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
 
     $scope.start = ->
+      #ga('send', 'event', 'start game')
       $scope.reset()
       stopTimer()
       $scope.gameNumber++
@@ -241,6 +242,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
         window.intervals = []
       else
+        #ga('send', 'event', 'sikrit shadowparty')
         elements = document.getElementsByClassName('flip-container')
         [].forEach.call elements, (element) ->
           interval = setInterval ->
@@ -259,39 +261,43 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       , 1000
 
 
+    uploadFile = ->
+      if !this?.files?[0]?
+        return
+
+      #ga('send', 'event', 'image upload start')
+
+      upload_success = (result) ->
+        #ga('send', 'event', 'uploaded image')
+        element.val(null)
+        hideProgressBar()
+
+        link = result?.data?.link
+        console.log "link", link
+
+
+      upload_error = (err) ->
+        console.log "err", err
+        #ga('send', 'event', 'image upload error', JSON.stringify(err))
+        hideProgressBar()
+
+
+      upload_notify = (progress) ->
+        $timeout ->
+          $scope.uploadProgress = progress
+
+
+      $scope.showProgress = true
+      $scope.uploadProgress = 0
+
+      imgurUpload
+        .upload(this.files[0])
+        .then upload_success, upload_error, upload_notify
+
+
+
+
     $scope.selectFile = ->
       element = document.getElementById('image-upload')
       element.click()
-      element.onchange = ->
-        if !this?.files?[0]?
-          return
-
-        #ga('send', 'event', 'uploaded image')
-
-        upload_success = (result) ->
-          element.val(null)
-          hideProgressBar()
-
-          link = result?.data?.link
-
-          console.log "link", link
-
-
-        upload_error = (err) ->
-          console.log "err", err
-          #ga('send', 'event', 'image upload error', JSON.stringify(err))
-          hideProgressBar()
-
-
-        upload_notify = (progress) ->
-          $timeout ->
-            $scope.uploadProgress = progress
-
-
-        $scope.showProgress = true
-        $scope.uploadProgress = 0
-
-        imgurUpload
-          .upload(this.files[0])
-          .then upload_success, upload_error, upload_notify
-
+      element.onchange = uploadFile
