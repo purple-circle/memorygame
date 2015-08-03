@@ -3,7 +3,7 @@ app = angular.module 'app', [
   'imgurUpload'
 ]
 
-app.service 'api', ->
+app.service 'api', ($http) ->
   preloadImage: (url) ->
     img = new Image()
     img.src = url
@@ -72,6 +72,9 @@ app.service 'api', ->
       array[counter] = array[index]
       array[index] = temp
     array
+
+  loadImages: ->
+    $http.get('/api/get-images')
 
 
 app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
