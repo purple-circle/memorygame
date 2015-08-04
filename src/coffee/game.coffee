@@ -146,28 +146,34 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       gameBoard = $scope.board.init(options)
       boardIsValid = $scope.board.validateBoard(gameBoard)
 
-      $scope.images = api.shuffle(api.getImgurIds())[0..$scope.board.pairs-1]
-
-      for id in $scope.images
-        api.preloadImage api.getImgurUrlFromId id
+      $scope.gameStarted = false
 
       if !boardIsValid
         console.warn 'Board is invalid :('
         return false
 
-      $scope.board.board.forEach (row, rowIndex) ->
-        row.forEach (card, cardIndex) ->
+      api
+        .loadImages()
+        .then (images) ->
+          $scope.gameStarted = true
+          $scope.images = api.shuffle(api.getImgurIds())[0..$scope.board.pairs-1]
 
-          data =
-            image: api.getImgurUrlFromId $scope.images[card-1]
-            rowIndex: rowIndex
-            cardIndex: cardIndex
-            number: card
-            cardClass: "card-#{$scope.board.random(1, 12)}"
-            clicked: false
-            match: false
+          for id in $scope.images
+            api.preloadImage api.getImgurUrlFromId id
 
-          $scope.cards.push data
+          $scope.board.board.forEach (row, rowIndex) ->
+            row.forEach (card, cardIndex) ->
+
+              data =
+                image: api.getImgurUrlFromId $scope.images[card-1]
+                rowIndex: rowIndex
+                cardIndex: cardIndex
+                number: card
+                cardClass: "card-#{$scope.board.random(1, 12)}"
+                clicked: false
+                match: false
+
+              $scope.cards.push data
 
     $scope.start()
 
