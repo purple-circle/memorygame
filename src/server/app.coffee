@@ -30,7 +30,8 @@ sessionStore = session
 app.use cookieParser(settings.cookie_secret)
 app.use sessionStore
 
-#app.use favicon(__dirname + '/public/images/favicons/favicon.ico')
+
+app.use favicon(__dirname + '../../../favicon.ico')
 
 # view engine setup
 app.use express.static(path.join(__dirname, '../../'))
