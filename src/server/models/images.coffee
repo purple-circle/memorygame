@@ -7,4 +7,12 @@ images.save = (data) ->
   image = new Image(data)
   image.save()
 
+images.get = (limit = 20) ->
+  Image = mongoose.model 'images'
+  Image
+    .find()
+    .limit(limit)
+    .exec()
+
+
 module.exports = images
