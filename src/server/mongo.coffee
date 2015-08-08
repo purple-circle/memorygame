@@ -10,7 +10,6 @@ module.exports = (settings) ->
 
   mongoose.model 'images', imageSchema
 
-
   db = mongoose.connection
 
   db.on 'error', (error) ->
