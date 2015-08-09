@@ -31,6 +31,16 @@
       <button ng-click="showNumber = !showNumber">Toggle number on card</button>
     </p>
 
+    <p>
+      <div ng-repeat="mode in gameModes">
+        <label>
+          <input type="radio" name="gameMode" ng-model="$parent.gameMode" ng-change="setGameMode()" value="{{mode}}"> {{mode}}
+        </label>
+      </div>
+    </p>
+
+    Game mode: {{gameMode}}
+
     Time played: {{timers[gameNumber].time}} seconds.
 
     <span ng-if="gameEnded">

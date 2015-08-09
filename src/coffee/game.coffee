@@ -93,9 +93,17 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
     $scope.showNumber = false
 
+    $scope.gameModes = ['numbers', 'images']
+    $scope.gameMode = $scope.gameModes[0]
+
     # TODO: move to app.config
     imgurUpload.setClientId 'c3adff5c1adb461'
 
+
+    $scope.setGameMode = ->
+      $scope.showNumber = $scope.gameMode is 'numbers'
+
+    $scope.setGameMode()
 
     stopTimer = ->
       if $scope.gameTimer
