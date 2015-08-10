@@ -3,6 +3,7 @@ module.exports = (settings) ->
 
   imageSchema = mongoose.Schema {
     url: 'String'
+    category: 'String'
     metadata: 'Object'
     created: { type: Date, default: Date.now }
     random: {type: [Number], index: '2d', default: -> return [Math.random(), Math.random()]}
