@@ -23,19 +23,15 @@ Board = ->
       @createBoard()
 
     createBoard: ->
-      if !@inited
+      if not @inited
         console.log 'Run init'
         return false
 
       rows = @options.boardSize[0] - 1
       cardsPerRow = @options.boardSize[1] - 1
 
-      @board = []
-      for i in [0..rows]
-        row = []
-        for u in [0..cardsPerRow]
-          row.push @getFreeCard()
-        @board.push row
+      @board = [0..rows].map =>
+        @board.push [0..cardsPerRow].map => @getFreeCard()
 
       @board
 
@@ -46,7 +42,7 @@ Board = ->
       min + Math.round(Math.random() * (max - min))
 
     validateBoard: (board) ->
-      if !@pairs
+      if not @pairs
         return false
 
       flatten =
@@ -99,7 +95,7 @@ Board = ->
       card1 = @checkCard(data[0][0], data[0][1])
       card2 = @checkCard(data[1][0], data[1][1])
 
-      if !card1? or !card2?
+      if not card1? or not card2?
         return false
 
       card1 is card2

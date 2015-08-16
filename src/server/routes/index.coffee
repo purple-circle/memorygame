@@ -14,7 +14,6 @@ router.get '/api/get-images', (req, res) ->
     .get({limit: 20})
     .then (result) ->
       res.jsonp result
-      console.log "result", result
 
 
 router.post '/api/save-image', (req, res) ->
@@ -22,7 +21,6 @@ router.post '/api/save-image', (req, res) ->
     .save(req.body)
     .then (result) ->
       res.jsonp result
-      console.log "result", result
 
 
 module.exports = router

@@ -20,7 +20,7 @@ checkLoopMatches = ->
   first = getRandomNotRemoved()
   firstCard = board.checkCard(first[0], first[1])
   if memory[firstCard]?
-    if !board.removed[first[0]] or !board.removed[first[0]]?[first[1]]
+    if not board.removed[first[0]] or not board.removed[first[0]]?[first[1]]
       second = memory[firstCard]
 
   second ?= getRandomNotRemoved()

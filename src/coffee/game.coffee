@@ -156,7 +156,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
       $scope.gameStarted = false
 
-      if !boardIsValid
+      if not boardIsValid
         console.warn 'Board is invalid :('
         return false
 
@@ -199,7 +199,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       if clickedElements.length is 2
         clearCards()
 
-      card.clicked = !card.clicked
+      card.clicked = not card.clicked
 
       $scope.timers[$scope.gameNumber].tries++
 
@@ -279,7 +279,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
 
     uploadFile = ->
-      if !this?.files?[0]?
+      if not this?.files?[0]?
         return
 
       #ga('send', 'event', 'image upload start')
@@ -312,9 +312,8 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
         .then upload_success, upload_error, upload_notify
 
 
-
-
     $scope.selectFile = ->
       element = document.getElementById('image-upload')
       element.click()
       element.onchange = uploadFile
+
