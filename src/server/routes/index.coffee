@@ -11,7 +11,7 @@ router.get '/', (req, res) ->
 
 router.get '/api/get-images', (req, res) ->
   images
-    .get({limit: 20})
+    .get(limit)
     .then (result) ->
       res.jsonp result
 
