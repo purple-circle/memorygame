@@ -138,7 +138,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
 
     $scope.start = ->
-      #ga('send', 'event', 'start game')
+      ga('send', 'event', 'start game')
       $scope.reset()
       stopTimer()
       $scope.gameNumber++
@@ -259,7 +259,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
         window.intervals = []
       else
-        #ga('send', 'event', 'sikrit shadowparty')
+        ga('send', 'event', 'sikrit shadowparty')
         elements = document.getElementsByClassName('flip-container')
         [].forEach.call elements, (element) ->
           interval = setInterval ->
@@ -282,10 +282,10 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
       if not this?.files?[0]?
         return
 
-      #ga('send', 'event', 'image upload start')
+      ga('send', 'event', 'image upload start')
 
       upload_success = (result) ->
-        #ga('send', 'event', 'uploaded image')
+        ga('send', 'event', 'uploaded image')
         element.val(null)
         hideProgressBar()
 
@@ -295,7 +295,7 @@ app.directive 'memorygame', ($timeout, $interval, $window, api, imgurUpload) ->
 
       upload_error = (err) ->
         console.log "err", err
-        #ga('send', 'event', 'image upload error', JSON.stringify(err))
+        ga('send', 'event', 'image upload error', JSON.stringify(err))
         hideProgressBar()
 
 

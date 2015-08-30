@@ -7,6 +7,7 @@ images.save = (data) ->
   image = new Image(data)
   image.save()
 
+
 images.getFromCategory = (category, limit = 20) ->
   Image = mongoose.model 'images'
   Image
